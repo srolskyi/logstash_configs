@@ -1,0 +1,45 @@
+## Fix issue with GEOIP
+## Need create index_patter on Kibana => Dev Tools
+
+## GET _template/aws.elb
+
+## DELETE _template/aws.elb
+
+PUT _template/aws.elb
+{
+  "index_patterns": ["aws.elb.*"],
+  "settings": {
+    "number_of_shards": 1
+  },
+   "mappings" : {
+      "properties" : {
+         "host" : {
+            "properties" : {
+               "name" : {
+                  "type" : "keyword"
+               },
+               "ip" : {
+                  "type" : "ip"
+               }
+            }
+         },
+        "geoip"  : {
+            "type" : "object",
+            "dynamic": true,
+            "properties" : {
+            "location" : { "type" : "geo_point" }
+            }
+                },
+         "process": {
+           "properties" : {
+              "pid" : {
+                 "type" : "long"
+              },
+              "name" : {
+                 "type" : "keyword"
+              }
+           }
+         }
+      }
+   }
+}
